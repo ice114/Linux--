@@ -417,3 +417,41 @@ hello world
 不能直接写hello.sh
 
 第一种用bash权限
+### Shell脚本变量
+>- 系统预定义变量
+如PWD HOME PATH等，输出echo $HOME
+查询系统变量：set 
+LINES=37,前名后值
+
+>- 自定义变量
+定义变量：变量名=值，中间不能加空格，否则会隔断，如果变量值有空格，应该用双引号引起来，表示是字符串
+撤销变量：unset 变量名
+声明静态变量：readonly 变量名
+在bash里，变量值均视为字符串
+a=1
+b=&a+1
+echo &b
+1+1
+升级为全局环境变量，供其他shell程序使用，否则只能在当前bash用
+export 变量名
+
+>- 特殊变量
+$n:n为数字，$0表示当前脚本，$1-$9表示第一到第九个参数，十以上的参数需要用大括号包括${10}
+command是一种脚本，可以传递进去参数
+ls -l
+
+在hello.sh脚本内，对参数进行操作
+echo $0
+echo $1
+echo $2
+echo ${10}
+
+脚本外传参
+bash hello.sh hello world 3 4 5 6 7 8 9 10
+输出结果：
+hello.sh
+hello 
+world
+10
+
+$#:表示输入参数个数，以此判断输入是否合理
