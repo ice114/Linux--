@@ -429,8 +429,8 @@ LINES=37,前名后值
 声明静态变量：readonly 变量名
 在bash里，变量值均视为字符串
 a=1
-b=&a+1
-echo &b
+b=$a+1
+echo $b
 1+1
 升级为全局环境变量，供其他shell程序使用，否则只能在当前bash用
 export 变量名
@@ -456,4 +456,166 @@ world
 
 $#:表示输入参数个数，以此判断输入是否合理
 
+$*:表示传入脚本所有参数，把所有参数看作一个整体
+$@:表示传入脚本的所有，但是各自分开
+
+$?:最后一次执行命令的返回状态，如果上一个命令执行成功则为0，否则返回非0，表面上一个命令失败
+### Shell运算符
+$[]:中括号里面写表达式+ - * /
+$(()):
+
+nantom@nandeMacBook-Air ~ % b=$[1+2]
+nantom@nandeMacBook-Air ~ % echo $b
+3
+nantom@nandeMacBook-Air ~ % a=$[$b*3]
+nantom@nandeMacBook-Air ~ % echo $a
+9
+
+### Shell条件判断
+#### 单条件判断
+test condition
+[condition]
+condition:
+>- 判断两个整数
+-eq:equal
+-ne:not equal
+-lt:less than
+-gt:greater than
+-le:less or equal
+-ge:greater or equal
+必须搭配$?使用才能判断是否正确
+
+nantom@nandeMacBook-Air ~ % test 2 -ne 2
+nantom@nandeMacBook-Air ~ % echo $?
+1
+
+nantom@nandeMacBook-Air ~ % [ 2 -ne 1 ]
+nantom@nandeMacBook-Air ~ % echo $?
+0
+
+>- 当前用户对文件是否有对应权限
+ -r:有读权限 
+ -w：写
+  -x：执行
+
+nantom@nandeMacBook-Air ~ % chmod 777 hello.txt
+nantom@nandeMacBook-Air ~ % ls -l
+total 8
+drwx------+  5 nantom  staff   160  9 16 14:10 Desktop
+drwx------+  3 nantom  staff    96  9 15 18:22 Documents
+drwx------+  6 nantom  staff   192  9 15 22:07 Downloads
+drwx------@ 87 nantom  staff  2784  9 15 21:45 Library
+drwxr-xr-x@ 18 nantom  staff   576  9 15 19:55 Linux--
+drwx------   4 nantom  staff   128  9 15 19:48 Movies
+drwx------+  3 nantom  staff    96  9 15 18:22 Music
+drwx------+  4 nantom  staff   128  9 15 18:22 Pictures
+drwxr-xr-x+  4 nantom  staff   128  9 15 18:22 Public
+drwxr-xr-x   5 nantom  staff   160  9 15 21:34 hello
+-rw-r--r--   1 nantom  staff    71  9 16 14:16 hello.sh
+-rwxrwxrwx   1 nantom  staff     0  9 16 14:45 hello.txt
+nantom@nandeMacBook-Air ~ % [ -r hello.txt ]
+nantom@nandeMacBook-Air ~ % echo $?
+0
+
+>- 按照文件类型进行判断
+ -e:existence 文件存在
+ -f:文件存在且是一个常规文件（file）
+ -d:文件存在且是一个目录（directory）
+
+ nantom@nandeMacBook-Air ~ % [ -e hello.txt ]
+nantom@nandeMacBook-Air ~ % echo $?
+0
+nantom@nandeMacBook-Air ~ % [ -f hello.txt ]
+nantom@nandeMacBook-Air ~ % echo $?
+0
+nantom@nandeMacBook-Air ~ % [ -d hello.txt ]
+nantom@nandeMacBook-Air ~ % echo $?
+1
+nantom@nandeMacBook-Air ~ % [ -e thanks.txt ]
+nantom@nandeMacBook-Air ~ % echo $?
+1
+
+#### 多条件判断
+>- &&:先执行前面condition，成功再执行后面condition
+nantom@nandeMacBook-Air ~ % test 1 -eq 2 && test 2 -lt 3
+nantom@nandeMacBook-Air ~ % echo $?
+1
+
+>- ||:或
+nantom@nandeMacBook-Air ~ % [ 1 -eq 2 ] || [ 2 -lt 3 ] 
+nantom@nandeMacBook-Air ~ % echo $?
+0
+
+### 流程控制
+#### if判断
+>- 单分支
+\
+if [ codition ] ;then 
+\
+程序
+\
+fi
+\
+或者
+\
+if [ codition ]
+\
+then 
+\
+程序
+\
+fi
+
+>- 多分支
+\
+if [ condition ]
+\
+then
+\
+程序
+\
+elif [ condition ]
+\
+程序
+\
+then
+\
+else
+\
+程序
+\
+fi
+
+eg:
+#!/bin/bash
+\
+echo $0
+\
+echo $1
+\
+echo $2
+\
+if [ $1 -eq $2 ]
+\
+then
+\
+echo "$1大于$2"
+\
+elif [ $1 -lt $2 ]
+\
+then
+\
+echo "$1小于$2"
+\
+else
+\
+echo "$1大于$2"
+\
+fi
+
+nantom@nandeMacBook-Air ~ % bash hello.sh 1 2
+hello.sh
+1
+2
+1小于2
 
