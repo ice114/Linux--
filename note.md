@@ -619,3 +619,172 @@ hello.sh
 2
 1小于2
 
+#### case判断
+语法
+case $变量名 in
+\
+值1)
+\
+程序1
+\
+;;
+\
+值2)
+\
+程序2
+\
+;;
+\
+*)
+\
+如果匹配均失败，用星号表示默认值
+\
+;;
+\
+esac
+
+
+
+case $1 in 
+\
+1)
+\
+echo "第一个参数为1"
+\
+;;
+\
+2)
+\
+echo "第一个参数为2"
+\
+;;
+\
+esac
+
+#### for循环
+for((初始值;循环控制条件;变量变化))
+\
+do
+\
+done
+
+
+sum=0
+\
+for((i=1;i<=100;i++))
+\
+do
+\
+sum=$[$sum+$i]
+\
+done
+\
+echo $sum
+
+变量遍历字典
+\
+for i in words   
+do
+\
+done
+
+for i in 1 2 3
+\
+do
+\
+echo "第$i次遍历"
+\
+done
+
+#### 两个特殊变量$*与$@的区别与应用
+两者均表示传入的所有参数 ，没有被""概括时没有区别，均能被for i in 调用
+\
+for i in $*
+\
+do
+\
+done
+
+for i in $@
+\
+do
+\
+echo "这是第$i 次遍历"
+\
+done
+
+nantom@nandeMacBook-Air ~ % bash hello.sh 1 2 3 4 5 
+
+这是第1 次遍历
+这是第2 次遍历
+这是第3 次遍历
+这是第4 次遍历
+这是第5 次遍历
+
+如何被""概括，就有差别
+
+#!/bin/bash
+\
+echo '----$*----'
+
+for i in "$*"
+\
+do
+\
+echo "这是第$i 次遍历"
+\
+done
+
+echo '----$@----'
+
+\
+for i in "$@"
+\
+do
+\
+echo "这是第$i 次遍历"
+\
+done
+
+
+nantom@nandeMacBook-Air ~ % bash hello.sh 1 2 3 4 5
+
+----$*----
+
+这是第1 2 3 4 5 次遍历
+
+----$@----
+这是第1 次遍历
+这是第2 次遍历
+这是第3 次遍历
+这是第4 次遍历
+这是第5 次遍历
+
+"$*"表示一个参数
+
+"$@"表示多个参数
+#### while循环
+while [ 条件判断 ]
+\
+do 
+\
+程序
+\
+done
+
+i=1
+\
+sum=1
+
+
+while [ $i -le 100 ]
+
+do 
+
+i=$[$i+1]
+
+sum=$[$sum+$i]
+\
+done
+\
+echo "$sum"
