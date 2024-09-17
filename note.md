@@ -788,3 +788,39 @@ sum=$[$sum+$i]
 done
 \
 echo "$sum"
+
+### 读取控制台输入
+read (选项) 变量名
+
+-t：时间
+-p:提示prompt
+
+eg:
+
+read -t 7 -p "请在七秒内输入" name age
+ß
+echo "你好年龄为$age 的$name"
+
+### shell函数
+#### 系统函数
+>- basename:获取文件地址的的最基础名字
+ \
+ basename [string] [suffix]
+ \
+ suffix为文件类型，可删去文件类型
+ nantom@nandeMacBook-Air ~ % basename /user/sss/ddd/ss.txt
+ \
+ss.txt
+\
+nantom@nandeMacBook-Air ~ % basename /user/ss/dd/ss.md .md
+\
+ss
+
+>- dirname [string]
+\
+获取文件所在目录的地址
+\
+nantom@nandeMacBook-Air ~ % dirname /user/ss/dd/ss.md
+\
+/user/ss/dd
+#### 自定义函数
